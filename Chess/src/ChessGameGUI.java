@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ChessGameGUI extends JFrame {
     private static final String[][] board = new String[8][8];
@@ -14,7 +15,6 @@ public class ChessGameGUI extends JFrame {
     private int[] lastTo = null;
     private final Image backgroundImage;
 
-
     private final JTextArea moveHistoryArea = new JTextArea();  // Move history panel
     private boolean vsAI = false;  // Tracks if playing vs AI
 
@@ -24,7 +24,7 @@ public class ChessGameGUI extends JFrame {
         setSize(1000, 1000);
         setResizable(false);
         // Load background image
-        backgroundImage = new ImageIcon("Chess/images/background.jpg").getImage();
+        backgroundImage = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/background.jpg"))).getImage();
         showMainMenu();
     }
 
@@ -64,7 +64,7 @@ public class ChessGameGUI extends JFrame {
         Font buttonFont = new Font("Arial", Font.BOLD, 20); // Larger font
 
         JButton playButton = new JButton("2-Player Game");
-        styleMenuButton(playButton, buttonFont, 250, 55); // Larger button size
+        styleMenuButton(playButton, buttonFont); // Larger button size
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         playButton.addActionListener(e -> {
             vsAI = false;
@@ -72,7 +72,7 @@ public class ChessGameGUI extends JFrame {
         });
 
         JButton aiButton = new JButton("Play vs AI");
-        styleMenuButton(aiButton, buttonFont, 250, 55);
+        styleMenuButton(aiButton, buttonFont);
         aiButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         aiButton.addActionListener(e -> {
             vsAI = true;
@@ -80,7 +80,7 @@ public class ChessGameGUI extends JFrame {
         });
 
         JButton howToPlayButton = new JButton("How to Play");
-        styleMenuButton(howToPlayButton, buttonFont, 250, 55);
+        styleMenuButton(howToPlayButton, buttonFont);
         howToPlayButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         howToPlayButton.addActionListener(e -> showHowToPlay());
 
@@ -102,9 +102,9 @@ public class ChessGameGUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    private void styleMenuButton(JButton button, Font font, int width, int height) {
+    private void styleMenuButton(JButton button, Font font) {
         button.setFont(font);
-        button.setPreferredSize(new Dimension(width, height));
+        button.setPreferredSize(new Dimension(250, 55));
         button.setFocusPainted(false);
         button.setBackground(new Color(70, 130, 180));
         button.setForeground(Color.WHITE);
@@ -204,11 +204,29 @@ public class ChessGameGUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(150, 1000));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
         add(scrollPane, BorderLayout.EAST);
 
-        revalidate();
-        repaint();
+        SwingUtilities.invokeLater(() -> {
+            revalidate();
+            repaint();
+        });
+        refreshBoard();
+    }
+
+    private void refreshBoard() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                buttons[row][col].setIcon(null);
+                if (board[row][col] != null) {
+                    ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/" + board[row][col] + ".png")));
+                    Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    buttons[row][col].setIcon(new ImageIcon(img));
+
+                }
+                // Reset square color (no highlight)
+                buttons[row][col].setBackground((row + col) % 2 == 0 ? Color.WHITE : Color.GRAY);
+            }
+        }
     }
 
     private void initializeBoard() {
@@ -246,7 +264,7 @@ public class ChessGameGUI extends JFrame {
         String piece = board[row][col];
         buttons[row][col].setIcon(null);
         if (piece != null) {
-            ImageIcon icon = new ImageIcon("Chess/images/" + piece + ".png");
+            ImageIcon icon = new ImageIcon("Chess/src/images/" + piece + ".png");
             Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             buttons[row][col].setIcon(new ImageIcon(img));
         }
@@ -371,21 +389,6 @@ public class ChessGameGUI extends JFrame {
             String moveNotation = piece + ": " + (char) ('a' + from[1]) + (8 - from[0]) + " → " + (char) ('a' + to[1]) + (8 - to[0]);
             moveHistoryArea.append(moveNotation + "\n");
             moveHistoryArea.setCaretPosition(moveHistoryArea.getDocument().getLength());  // Auto-scroll
-        }
-
-        private void refreshBoard() {
-            for (int row = 0; row < 8; row++) {
-                for (int col = 0; col < 8; col++) {
-                    buttons[row][col].setIcon(null);
-                    if (board[row][col] != null) {
-                        ImageIcon icon = new ImageIcon("Chess/images/" + board[row][col] + ".png");
-                        Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-                        buttons[row][col].setIcon(new ImageIcon(img));
-                    }
-                    // Reset square color (no highlight)
-                    buttons[row][col].setBackground((row + col) % 2 == 0 ? Color.WHITE : Color.GRAY);
-                }
-            }
         }
 
         private boolean isStalemate(boolean isWhite) {
