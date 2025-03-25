@@ -17,7 +17,7 @@ A full-featured 2D chess game written in Java with a graphical interface using S
 - (Optional) An IDE like IntelliJ IDEA if you want to view/edit the source code
 
 ### ▶️ To Play
-1. [Download the `Chess.jar`](#) *(provide link if hosting online)*
+1. [Download the `Chess.jar`](#)
 2. Double-click `Chess.jar`  
    OR open terminal and run:
    ```bash
