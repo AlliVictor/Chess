@@ -18,7 +18,3 @@ A full-featured 2D chess game written in Java with a graphical interface using S
 
 ### ▶️ To Play
 1. [Download the Chess.jar](https://github.com/AlliVictor/Chess/releases/tag/Chess.jar)
-2. Double-click `Chess.jar`  
-   OR open terminal and run:
-   ```bash
-   java -jar Chess.jar
