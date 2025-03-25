@@ -24,7 +24,7 @@ public class ChessGameGUI extends JFrame {
         setSize(1000, 1000);
         setResizable(false);
         // Load background image
-        backgroundImage = new ImageIcon("images/background.jpg").getImage();
+        backgroundImage = new ImageIcon("Chess/images/background.jpg").getImage();
         showMainMenu();
     }
 
@@ -246,7 +246,7 @@ public class ChessGameGUI extends JFrame {
         String piece = board[row][col];
         buttons[row][col].setIcon(null);
         if (piece != null) {
-            ImageIcon icon = new ImageIcon("images/" + piece + ".png");
+            ImageIcon icon = new ImageIcon("Chess/images/" + piece + ".png");
             Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             buttons[row][col].setIcon(new ImageIcon(img));
         }
@@ -378,7 +378,7 @@ public class ChessGameGUI extends JFrame {
                 for (int col = 0; col < 8; col++) {
                     buttons[row][col].setIcon(null);
                     if (board[row][col] != null) {
-                        ImageIcon icon = new ImageIcon("images/" + board[row][col] + ".png");
+                        ImageIcon icon = new ImageIcon("Chess/images/" + board[row][col] + ".png");
                         Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                         buttons[row][col].setIcon(new ImageIcon(img));
                     }
@@ -440,7 +440,6 @@ public class ChessGameGUI extends JFrame {
                 makeMove(fromList.get(index), allMoves.get(index));
             }
         }
-
     }
 
     public static void main(String[] args) {
