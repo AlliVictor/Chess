@@ -205,7 +205,7 @@ public class MoveValidator {
             String[][] tempBoard = copyBoard(board);
             tempBoard[move[0]][move[1]] = tempBoard[from[0]][from[1]];
             tempBoard[from[0]][from[1]] = null;
-            if (isKingInCheck(tempBoard, tempBoard[move[0]][move[1]].charAt(0) == 'w')) {
+            if (!isKingInCheck(tempBoard, tempBoard[move[0]][move[1]].charAt(0) == 'w')) {
                 safeMoves.add(move);
             }
         }
