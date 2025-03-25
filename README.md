@@ -7,8 +7,6 @@ A full-featured 2D chess game written in Java with a graphical interface using S
 - Move history panel
 - Pawn promotion dialog
 - Stalemate detection
-- In-game menu (restart, quit, rules)
-- Clean modern UI with frosted glass effect
 
 ---
 
